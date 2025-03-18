@@ -1,3 +1,12 @@
+import os
+import sys
+from inference.src.utils.text import str2bool
+
+# Your existing code here
+
+if __name__ == "__main__":
+    # Your existing main function code here
+
 import argparse
 import os
 import string
