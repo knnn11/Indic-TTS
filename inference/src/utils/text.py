@@ -6,7 +6,7 @@ import re
 import traceback
 
 import regex
-from indic_num2words import num2words, supported_langs
+# from indic_num2words import num2words, supported_langs
 from nemo_text_processing.text_normalization.normalize import Normalizer
 
 from .translator import GoogleTranslator
