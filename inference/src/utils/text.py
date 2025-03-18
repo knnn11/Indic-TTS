@@ -1,3 +1,6 @@
+def str2bool(value):
+    return value.lower() in ("yes", "true", "t", "1")
+
 import os
 
 PWD = os.path.dirname(__file__)
@@ -6,7 +9,7 @@ import re
 import traceback
 
 import regex
-from indic_numtowords import num2words, supported_langs
+from indic_num2words import num2words, supported_langs
 from nemo_text_processing.text_normalization.normalize import Normalizer
 
 from .translator import GoogleTranslator
@@ -20,41 +23,32 @@ indic_acronym_matcher = regex.compile(r"([\p{L}\p{M}]+\.\s*){2,}")
 short_form_regex = re.compile(r"\b([A-Z][\.\s]+)+([A-Z])?\b")
 eng_consonants_regex = re.compile(r"\b[BCDFGHJKLMNPQRSTVWXZbcdfghjklmnpqrstvwxz]+\b")
 
-
 def get_shortforms_from_string(text):
     dotted_shortforms = [m.group() for m in re.finditer(short_form_regex, text)]
     non_dotted_shortforms = [m.group() for m in re.finditer(eng_consonants_regex, text)]
     return dotted_shortforms + non_dotted_shortforms
 
-
 decimal_str_regex = re.compile(
     "\d{1,3}(?:(?:,\d{2,3}){1,3}|(?:\d{1,7}))?(?:\.\d+)*(?:\.\d+)*"
 )
 
-
 def get_all_decimals_from_string(text):
     return decimal_str_regex.findall(text)
 
-
 num_str_regex = re.compile("\d{1,3}(?:(?:,\d{2,3}){1,3}|(?:\d{1,7}))?(?:\.\d+)?")
-
 
 def get_all_numbers_from_string(text):
     return num_str_regex.findall(text)
 
-
 multiple_stops_regex = r"\.\.+"
-
 
 def replace_multiple_stops(text):
     return re.sub(multiple_stops_regex, ".", text)
-
 
 date_generic_match_regex = re.compile("(?:[^0-9]\d*[./-]\d*[./-]\d*)")
 date_str_regex = re.compile(
     "(?:\d{1,2}[./-]\d{1,2}[./-]\d{2,4})|(?:\d{2,4}[./-]\d{1,2}[./-]\d{1,2})"
 )  # match like dd/mm/yyyy or dd-mm-yy or yyyy.mm.dd or yy/mm/dd
-
 
 def get_all_dates_from_string(text):
     candidates = date_generic_match_regex.findall(text)
@@ -63,17 +57,14 @@ def get_all_dates_from_string(text):
     candidates = " ".join(candidates)
     return date_str_regex.findall(candidates)
 
-
 def get_decimal_substitution(decimal):
     decimal_sub = decimal.replace(".", " point ").strip()
     return decimal_sub
-
 
 email_regex = r"[\w.+-]+@[\w-]+\.[\w.-]+"
 url_regex = r"((?:\w+://)?\w+\.\w+\.\w+/?[\w\.\?=#]*)|(\w*.com/?[\w\.\?=#]*)"
 currency_regex = r"\₹\ ?[+-]?[0-9]{1,3}(?:,?[0-9])*(?:\.[0-9]{1,2})?"
 phone_regex = r"\+?\d[ \d-]{6,12}\d"
-
 
 class TextNormalizer:
     def __init__(self):
