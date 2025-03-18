@@ -2,11 +2,6 @@ import os
 import sys
 from inference.src.utils.text import str2bool
 
-# Your existing code here
-
-if __name__ == "__main__":
-    # Your existing main function code here
-
 import argparse
 import os
 import string
@@ -37,9 +32,6 @@ from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
 from TTS.utils.io import load_checkpoint
 from tqdm.auto import tqdm
-
-from utils import str2bool
-
 
 def get_arg_parser():
     parser = argparse.ArgumentParser(description='Traning and evaluation script for acoustic / e2e TTS model ')
@@ -180,8 +172,8 @@ def get_lang_chars(language):
 def get_test_sentences(language):
     if language == 'ta':
         test_sentences = [
-                "நேஷனல் ஹெரால்ட் ஊழல் குற்றச்சாட்டு தொடர்பாக, காங்கிரஸ் நாடாளுமன்ற உறுப்பினர் ராகுல் காந்தியிடம், அமலாக்கத்துறை, திங்கள் கிழமையன்று பத்து மணி நேரத்திற்கும் மேலாக விசாரணை நடத்திய நிலையில், செவ்வாய்க்கிழமை மீண்டும் விசாரணைக்கு ஆஜராகிறார்.",
-                "ஒரு விஞ்ஞானி தம் ஆராய்ச்சிகளை எவ்வளவோ கணக்காகவும் முன் யோசனையின் பேரிலும் நுட்பமாகவும் நடத்துகிறார்.",
+                "நேஷனல் ஹெரால்ட் ஊழல் குற்றச்சாட்டு தொடர்பாக, காங்கிரஸ் நாடாளுமன்[...]",
+                "ஒரு விஞ்ஞானி தம் ஆராய்ச்சிகளை எவ்வளவோ கணக்காகவும் முன் யோசனையின்[...]"
             ]
 
     elif language == 'en':
@@ -192,8 +184,8 @@ def get_test_sentences(language):
         
     elif language == 'mr':
         test_sentences = [
-                "मविआ सरकार अल्पमतात आल्यानंतर अनेक निर्णय घेतले: मुख्यमंत्री एकनाथ शिंदे यांचा आरोप.",
-                "वर्ध्यात भदाडी नदीच्या पुलावर कार डिव्हायडरला धडकून भीषण अपघात, दोघे गंभीर जखमी.",
+                "मविआ सरकार अल्पमतात आल्यानंतर अनेक निर्णय घेतले: मुख्यमंत्री एकना�[...]",
+                "वर्ध्यात भदाडी नदीच्या पुलावर कार डिव्हायडरला धडकून भीषण अपघात, दो[...]"
             ]
 
     elif language == 'as':
@@ -204,26 +196,26 @@ def get_test_sentences(language):
 
     elif language == 'bn':
         test_sentences = [
-                "লোডশেডিংয়ের কল্যাণে পুজোর দুসপ্তাহ আগে কেনাকাটার মাহেন্দ্রক্ষণে, দোকানে শোভা পাচ্ছে, মোমবাতি",
-                "এক চন্দরা নির্দোষ হইয়াও, আইনের আপাত নিশ্ছিদ্র জালে পড়িয়া প্রাণ দিয়াছিল",
+                "লোডশেডিংয়ের কল্যাণে পুজোর দুসপ্তাহ আগে কেনাকাটার মাহেন্দ্রক্ষণে,[...]",
+                "এক চন্দরা নির্দোষ হইয়াও, আইনের আপাত নিশ্ছিদ্র জালে পড়িয়া প্রাণ দিয়��[...]"
             ]
 
     elif language == 'brx':
         test_sentences = [
-                "गावनि गोजाम गामि नवथिखौ हरखाब नागारनानै गोदान हादानाव गावखौ दिदोमै फसंथा फित्राय हाबाया जोबोद गोब्राब जायोलै गोमजोर",
-                "सानहाबदों आं मोथे मोथो",
+                "गावनि गोजाम गामি नवथिखौ हरखाब नागारनানै गोदान हादानाव गावखौ दिदोम�[...]",
+                "सानहাবदों आं मोथे मोथो",
             ]
 
     elif language == 'gu':
         test_sentences = [
-                "ઓગણીસો છત્રીસ માં, પ્રથમવાર, એક્રેલીક સેફટી ગ્લાસનું, ઉત્પાદન, શરુ થઈ ગયું.",
-                "વ્યાયામ પછી પ્રોટીન લેવાથી, સ્નાયુની જે પેશીયોને હાનિ પ્હોંચી હોય છે.",
+                "ઓગણીસો છત્રીસ માં, પ્રથમવાર, એક્રેલીક સેફટી ગ્લાસનું, ઉત્પાદન, શરુ થ[...]",
+                "વ્યાયામ પછી પ્રોટીન લેવાથી, સ્નાયુની જે પેશીયોને હાનિ પ્હોંચી હોય ��[...]"
             ]
 
     elif language == 'hi':
         test_sentences = [
-                "बिहार, राजस्थान और उत्तर प्रदेश से लेकर हरियाणा, मध्य प्रदेश एवं उत्तराखंड में सेना में भर्ती से जुड़ी 'अग्निपथ स्कीम' का विरोध जारी है.",
-                "संयुक्त अरब अमीरात यानी यूएई ने बुधवार को एक फ़ैसला लिया कि अगले चार महीनों तक वो भारत से ख़रीदा हुआ गेहूँ को किसी और को नहीं बेचेगा.",
+                "बिहार, राजस्थान और उत्तर प्रदेश से लेकर हरियाणा, मध्य प्रदेश एवं उत्[...]",
+                "संयुक्त अरब अमीरात यानी यूएई ने बुधवार को एक फ़ैसला लिया कि अगले चार[...]"
             ]
 
     elif language == 'kn':
@@ -248,7 +240,7 @@ def get_test_sentences(language):
     elif language == 'mr':
         test_sentences = [
                 "म्हणुनच महाराच बिरुद मी मानान वागवल",
-                "घोडयावरून खाली उतरताना घोडेस्वार वृध्दाला म्हणाला, बाबा एवढया कडाक्याच्या थंडीत नदी कडेला तुम्ही किती वेळ बसला होतात.",
+                "घोडयावरून खाली उतरताना घोडेस्वार वृध्दाला म्हणाला, बाबा एवढया कडा�[...]"
             ]
 
     elif language == 'or':
@@ -259,22 +251,22 @@ def get_test_sentences(language):
 
     elif language == 'raj':
         test_sentences = [
-                "कन्हैयालाल सेठिया इत्याद अनुपम काव्य कृतियां है, इंया ई, प्रकति काव्य री दीठ सूं, बादळी, लू",
+                "कन्हैयालाल सेठिया इत्याद अनुपम काव्य कृतियां है, इंया ई, प्रकति काव�[...]",
                 "नई बीनणियां रो घूंघटो नाक रे ऊपर ऊपर पड़यो सावे है",
             ]
 
     elif language == 'te':
         test_sentences = [
-                "సింహం అడ్డువచ్చి, తప్పుకో శిక్ష విధించవలసింది నేను అని కోతిని అఙ్ఞాపించింది నక్కకేసి తిరిగి మంత్రి పుంగవా ఈ మూషికాధముడు చోరుడు అని నీకు ఎలా తెలిసింది అని అడిగింది.",
-                "ఈ మాటలు వింటూనే గాలవుడు, కువలయాశ్వాన్ని ఎక్కి, శత్రుజిత్తువద్దకు వెళ్లి, ఋతుధ్వజుణ్ణి పంపమని కోరాడు, ఋతుధ్వజుడు, కువలయాశ్వాన్ని ఎక్కి, గాలవుడి వెంట, ఆయన ఆశ్రమానికి వెళ్ళాడు.",
+                "సింహం అడ్డువచ్చి, తప్పుకో శిక్ష విధించవలసింది నేను అని కోతిని అఙ్�[...]",
+                "ఈ మాటలు వింటూనే గాలవుడు, కువలయాశ్వాన్ని ఎక్కి, శత్రుజిత్తువద్దకు �[...]"
             ]
 
     elif language == 'all':
         test_sentences = [
-                "ஒரு விஞ்ஞானி தம் ஆராய்ச்சிகளை எவ்வளவோ கணக்காகவும் முன் யோசனையின் பேரிலும் நுட்பமாகவும் நடத்துகிறார்.",
-                "ఇక బిన్ లాడెన్ తర్వాతి అగ్ర నాయకులు అయ్‌మన్ అల్ జవహరి తదితర ముఖ్యుల 'తలలు నరికి ఈటెలకు గుచ్చండి' అనేవి ఇతర ఆదేశాలు.",
-                "ಕೆಲ ದಿನಗಳಿಂದ ಮಳೆ ಕಡಿಮೆಯಾದಂತೆ ತೋರಿದ್ದರೂ ಕಳೆದ ಎರಡು ದಿನಗಳಲ್ಲಿ ರಾಜ್ಯದ ಹಲವೆಡೆ ಮತ್ತೆ ಮಳೆ ಸುರಿದಿದ್ದು ಇದರ ಪರಿಣಾಮದಿಂದಾಗಿ ಮತ್ತೆ ನೀರಿನ ಹರಿವು ಏರುವ ಪಥದಲ್ಲಿದೆ.",
-                "കോമണ്‍വെല്‍ത്ത് ഗെയിംസ് വനിതാ ക്രിക്കറ്റ് സെമി ഫൈനലില്‍ ഇംഗ്ലണ്ടിനെ ആവേശപ്പോരില്‍ വീഴ്ത്തി ഇന്ത്യ ഫൈനലിലെത്തി."
+                "ஒரு விஞ்ஞானி தம் ஆராய்ச்சிகளை எவ்வளவோ கணக்காகவும் முன் யோசனையின்[...]",
+                "ఇక బిన్ లాడెన్ తర్వాతి అగ్ర నాయకులు అయ్‌మన్ అల్ జవహరి తదితర ముఖ్యు[...]",
+                "ಕೆಲ ದಿನಗಳಿಂದ ಮಳೆ ಕಡಿಮೆಯಾದಂತೆ ತೋರಿದ್ದರೂ ಕಳೆದ ಎರಡು ದಿನಗಳಲ್ಲಿ ರಾಜ್ಯ��[...]",
+                "കോമണ്‍വെല്‍ത്ത് ഗെയിംസ് വനിതാ ക്രിക്കറ്റ് സെമി ഫൈനലില്‍ ഇംഗ്ലണ്�[...]"
             ]
 
     else:
@@ -351,402 +343,4 @@ def compute_attention_masks(model_path, config_path, meta_save_path, data_path, 
                 model_outputs = model.forward(text_input, text_lengths, mel_input, mel_lengths)
                 #model_outputs = model.inference(text_input, text_lengths, mel_input, mel_lengths)
             elif C.model == 'fast_pitch':
-                model_outputs = model.inference2(text_input, text_lengths)
-            else:
-                raise ValueError
-
-            alignments = model_outputs["alignments"].detach()
-            for idx, alignment in enumerate(alignments):
-                item_idx = item_idxs[idx]
-                # interpolate if r > 1
-                alignment = (
-                    torch.nn.functional.interpolate(
-                        alignment.transpose(0, 1).unsqueeze(0),
-                        size=None,
-                        scale_factor=model.decoder.r if "r" in vars(model.decoder) else 1,
-                        mode="nearest",
-                        align_corners=None,
-                        recompute_scale_factor=None,
-                    )
-                    .squeeze(0)
-                    .transpose(0, 1)
-                )
-                # remove paddings
-                alignment = alignment[: mel_lengths[idx], : text_lengths[idx]].cpu().numpy()
-                # set file paths
-                wav_file_name = os.path.basename(item_idx)
-                align_file_name = os.path.splitext(wav_file_name)[0] + "_attn.npy"
-                file_path = item_idx.replace(wav_file_name, align_file_name)
-                # save output
-                wav_file_abs_path = os.path.abspath(item_idx)
-                file_abs_path = os.path.abspath(file_path)
-                file_paths.append([wav_file_abs_path, file_abs_path])
-                np.save(file_path, alignment)
-
-        # output metafile
-        with open(meta_save_path, "w", encoding="utf-8") as f:
-            for p in file_paths:
-                f.write(f"{p[0]}|{p[1]}\n")
-        print(f" >> Metafile created: {meta_save_path}")
-
-    return True
-    
-
-def main(args):
-
-    if args.speaker == 'all':
-        meta_file_train="metadata_train.csv"
-        meta_file_val="metadata_test.csv"
-    else:
-        meta_file_train=f"metadata_train_{args.speaker}.csv"
-        meta_file_val=f"metadata_test_{args.speaker}.csv"
-
-    # set dataset config
-    dataset_config = BaseDatasetConfig(
-        name=args.dataset_name, 
-        meta_file_train=meta_file_train, 
-        meta_file_val=meta_file_val,
-        path=args.dataset_path.format(args.dataset_name, args.language), 
-        language=args.language
-    )
-
-    #lang_chars = get_lang_chars(args.language)
-    samples, _ = load_tts_samples(
-        dataset_config, 
-        eval_split=False,
-        formatter=formatter_indictts)
-    samples = filter_speaker(samples, args.speaker)
-    texts = "".join(item["text"] for item in samples)
-    lang_chars = sorted(list(set(texts)))
-    print(lang_chars, len(lang_chars))
-    del samples, texts
-
-    # set audio config
-    audio_config = BaseAudioConfig(
-        trim_db=60.0, # default: 45
-        #mel_fmin=0.0,  # default: 0
-        mel_fmax=8000, # default: None
-        log_func="np.log", # default: np.log10
-        spec_gain=1.0, # default: 20
-        signal_norm=False, # default: True
-    )
-
-    audio_configs = {
-        "without_norm": BaseAudioConfig(
-            trim_db=60.0, # default: 45
-            #mel_fmin=0.0,  # default: 0
-            mel_fmax=8000, # default: None
-            log_func="np.log", # default: np.log10
-            spec_gain=1.0, # default: 20
-            signal_norm=False, # default: True
-        ), 
-        "with_norm": BaseAudioConfig(
-            trim_db=60.0, # default: 45
-            #mel_fmin=0.0,  # default: 0
-            mel_fmax=8000, # default: None
-            log_func="np.log10", # default: np.log10
-            spec_gain=20, # default: 20
-            signal_norm=True, # default: True
-        ), 
-    }
-    audio_config = audio_configs[args.audio_config]
-
-    # set characters config
-    characters_config = CharactersConfig(
-        characters_class="TTS.tts.models.vits.VitsCharacters",
-        pad="<PAD>",
-        eos="<EOS>",
-        bos="<BOS>",
-        blank="<BLNK>",
-        #characters="!¡'(),-.:;¿?$%&‘’‚“`”„" + "".join(lang_chars),
-        characters="".join(lang_chars),
-        punctuations="!¡'(),-.:;¿? ",
-        phonemes=None
-    )
-
-    if args.lr_scheduler == 'NoamLR':
-        lr_scheduler_params = {
-            "warmup_steps": args.lr_scheduler_warmup_steps
-        }
-    elif args.lr_scheduler == 'StepLR':
-        lr_scheduler_params = {
-            "step_size": args.lr_scheduler_step_size,
-            "gamma": args.lr_scheduler_gamma
-        }
-    elif args.lr_scheduler == 'LinearLR':
-        lr_scheduler_params = {
-            "start_factor": args.lr_scheduler_gamma,
-            "total_iters": args.lr_scheduler_warmup_steps
-        }
-    elif args.lr_scheduler == 'CyclicLR':
-        lr_scheduler_params = {
-            "base_lr": args.lr * args.lr_scheduler_gamma,
-            "max_lr": args.lr,
-            "cycle_momentum": False
-        }
-    elif args.lr_scheduler in ['NoamLRStepConstant', 'NoamLRStepDecay'] :
-        lr_scheduler_params = {
-            "warmup_steps": args.lr_scheduler_warmup_steps,
-            "threshold_step": args.lr_scheduler_threshold_step
-        }
-    else:
-        raise NotImplementedError()
-
-    if args.lr_scheduler_aligner == 'NoamLR':
-        lr_scheduler_aligner_params = {
-            "warmup_steps": args.lr_scheduler_warmup_steps
-        }
-    elif args.lr_scheduler_aligner == 'StepLR':
-        lr_scheduler_aligner_params = {
-            "step_size": args.lr_scheduler_step_size
-        }
-    elif args.lr_scheduler_aligner in ['NoamLRStepConstant', 'NoamLRStepDecay'] :
-        lr_scheduler_aligner_params = {
-            "warmup_steps": args.lr_scheduler_warmup_steps,
-            "threshold_step": args.lr_scheduler_threshold_step
-        }
-    else:
-        raise NotImplementedError()
-
-
-    # set base tts config
-    base_tts_config = Namespace(
-        # input representation
-        audio=audio_config,
-        use_phonemes=args.use_phonemes,
-        phoneme_language=args.phoneme_language,
-        compute_input_seq_cache=args.compute_input_seq_cache,
-        text_cleaner=args.text_cleaner,
-        phoneme_cache_path=os.path.join(args.output_path, "phoneme_cache"),
-        characters=characters_config,
-        add_blank=args.add_blank,
-        # dataset
-        datasets=[dataset_config],
-        min_audio_len=args.min_audio_len,
-        max_audio_len=args.max_audio_len,
-        min_text_len=args.min_text_len,
-        max_text_len=args.max_text_len,
-        # data loading
-        num_loader_workers=args.num_workers,
-        num_eval_loader_workers=args.num_workers_eval,
-        # model
-        use_d_vector_file=args.use_d_vector_file,
-        d_vector_file=args.d_vector_file,
-        d_vector_dim=args.d_vector_dim,
-        # trainer - run
-        output_path=args.output_path,
-        project_name='indic-tts-acoustic',
-        run_name=f'{args.language}_{args.model}_{args.dataset_name}_{args.speaker}_{args.run_description}',
-        run_description=args.run_description,
-        # trainer - loggging
-        print_step=args.print_step,
-        plot_step=args.plot_step,
-        dashboard_logger='wandb',
-        wandb_entity='indic-asr',
-        # trainer - checkpointing
-        save_step=args.save_step,
-        save_n_checkpoints=args.save_n_checkpoints,
-        save_best_after=args.save_best_after,
-        # trainer - eval
-        print_eval=args.print_eval,
-        run_eval=args.run_eval,
-        # trainer - test
-        test_delay_epochs=args.test_delay_epochs,
-        # trainer - distibuted training
-        distributed_url=f'tcp://localhost:{args.port}',
-        # trainer - training
-        mixed_precision=args.mixed_precision,
-        epochs=args.epochs,
-        batch_size=args.batch_size,
-        eval_batch_size=args.batch_size_eval,
-        batch_group_size=args.batch_group_size,
-        lr=args.lr,
-        lr_scheduler=args.lr_scheduler,
-        lr_scheduler_params = lr_scheduler_params,
-        # test
-        #test_sentences_file=f'test_sentences/{args.language}.txt',
-        test_sentences=get_test_sentences(args.language),
-        eval_split_size=args.eval_split_size,
-    )
-    base_tts_config = vars(base_tts_config)
-
-    # set model config 
-    if args.model == 'glowtts':
-        config = GlowTTSConfig(
-            **base_tts_config,
-            use_speaker_embedding=args.use_speaker_embedding,
-        )
-    elif args.model == "vits":
-        vitsArgs = VitsArgs(
-            use_speaker_embedding=args.use_speaker_embedding,
-            use_sdp=args.use_sdp,
-            use_speaker_encoder_as_loss=args.use_speaker_encoder_as_loss,
-            speaker_encoder_config_path=args.speaker_encoder_config_path,
-            speaker_encoder_model_path=args.speaker_encoder_model_path,
-        )
-        config = VitsConfig(
-            **base_tts_config,
-            model_args=vitsArgs,
-            use_speaker_embedding=args.use_speaker_embedding,   
-        )
-    elif args.model == "fastpitch":
-
-        if args.use_speaker_encoder_as_loss:
-            return_wav = True
-            compute_linear_spec = True
-            assert args.vocoder_path is not None
-            assert args.vocoder_config_path is not None
-        else:
-            return_wav = False
-            compute_linear_spec = False
-            args.vocoder_path = None
-            args.vocoder_config_path = None
-
-        config = FastPitchConfig(
-            **base_tts_config,
-            model_args = ForwardTTSArgs(
-                use_aligner=args.use_aligner, 
-                use_separate_optimizers=args.use_separate_optimizers,
-                hidden_channels=args.hidden_channels,
-                use_speaker_encoder_as_loss=args.use_speaker_encoder_as_loss,
-                speaker_encoder_config_path=args.speaker_encoder_config_path,
-                speaker_encoder_model_path=args.speaker_encoder_model_path,
-                vocoder_path=args.vocoder_path,
-                vocoder_config_path=args.vocoder_config_path
-            ),
-            use_speaker_embedding=args.use_speaker_embedding,
-            use_ssim_loss = args.use_ssim_loss,
-            compute_f0=True,
-            f0_cache_path=os.path.join(args.output_path, "f0_cache"),
-            sort_by_audio_len=True,
-            max_seq_len=500000,
-            return_wav= return_wav,
-            compute_linear_spec=compute_linear_spec,
-            aligner_epochs=args.aligner_epochs,
-            lr_scheduler_aligner=args.lr_scheduler_aligner,
-            lr_scheduler_aligner_params = lr_scheduler_aligner_params
-        )
-
-        if not config.model_args.use_aligner:
-            metafile = 'metadata.csv'
-            attention_mask_meta_save_path = f'{args.dataset_path}/{args.attention_mask_meta_file_name}'
-            if not args.use_pre_computed_alignments:
-                print("[START] Computing attention masks...")
-                compute_attention_masks(args.attention_mask_model_path, args.attention_mask_config_path, attention_mask_meta_save_path, args.dataset_path, metafile, args)
-                print("[END] Computing attention masks")
-            dataset_config.meta_file_attn_mask = attention_mask_meta_save_path
-        
-    elif args.model == "tacotron2":
-        config = Tacotron2Config(
-            **base_tts_config,
-            use_speaker_embedding=args.use_speaker_embedding,
-            ga_alpha=0.0,
-            decoder_loss_alpha=0.25,
-            postnet_loss_alpha=0.25,
-            postnet_diff_spec_alpha=0,
-            decoder_diff_spec_alpha=0,
-            decoder_ssim_alpha=0,
-            postnet_ssim_alpha=0,
-            r=2,
-            attention_type="dynamic_convolution",
-            double_decoder_consistency=False,
-        )
-    elif args.model == "aligntts":
-        config = AlignTTSConfig(
-            **base_tts_config,
-        )
-
-    # set preprocessors
-    ap = AudioProcessor.init_from_config(config)
-    tokenizer, config = TTSTokenizer.init_from_config(config)
-
-    # load data
-    train_samples, eval_samples = load_tts_samples(
-        dataset_config,
-        eval_split=True,
-        #eval_split_size=config.eval_split_size,
-        formatter=formatter_indictts
-    )
-    train_samples = filter_speaker(train_samples, args.speaker)
-    eval_samples = filter_speaker(eval_samples, args.speaker)
-    print("Train Samples: ", len(train_samples))
-    print("Eval Samples: ", len(eval_samples))
-    
-    # set speaker manager
-    if args.use_speaker_embedding:
-        speaker_manager = SpeakerManager()
-        speaker_manager.set_ids_from_data(train_samples + eval_samples, parse_key="speaker_name")
-    elif args.use_d_vector_file:
-        speaker_manager = SpeakerManager(
-            d_vectors_file_path=args.d_vector_file, 
-            encoder_model_path=args.speaker_encoder_model_path,
-            encoder_config_path=args.speaker_encoder_config_path,
-            use_cuda=True)
-    else:
-        speaker_manager = None
-    
-   
-    # load model
-    if args.model == 'glowtts':
-        model = GlowTTS(config, ap, tokenizer, speaker_manager=speaker_manager)
-    elif args.model == 'vits':
-        model = Vits(config, ap, tokenizer, speaker_manager=speaker_manager)
-    elif args.model == 'fastpitch':
-        model = ForwardTTS(config, ap, tokenizer, speaker_manager=speaker_manager)
-    elif args.model == 'tacotron2':
-        model = Tacotron2(config, ap, tokenizer, speaker_manager=speaker_manager)
-    elif args.model == 'aligntts':
-        model = AlignTTS(config, ap, tokenizer, speaker_manager=speaker_manager)
-    if args.speaker == 'all':
-        config.num_speakers = speaker_manager.num_speakers
-        if hasattr(config, 'model_args') and hasattr(config.model_args, 'num_speakers'):
-            config.model_args.num_speakers = speaker_manager.num_speakers
-    else:
-        config.num_speakers = 1
-    if args.pretrained_checkpoint_path:
-        checkpoint_state = torch.load(args.pretrained_checkpoint_path)['model']
-        print(" > Partial model initialization...")
-        model_dict = model.state_dict()
-        for k, v in checkpoint_state.items():
-            if k not in model_dict:
-                print(" | > Layer missing in the model definition: {}".format(k))
-        # 1. filter out unnecessary keys
-        pretrained_dict = {k: v for k, v in checkpoint_state.items() if k in model_dict}
-        # 2. filter out different size layers
-        pretrained_dict = {k: v for k, v in pretrained_dict.items() if v.numel() == model_dict[k].numel()}
-        # 3. overwrite entries in the existing state dict
-        model_dict.update(pretrained_dict)
-        model.load_state_dict(model_dict)
-        print(" | > {} / {} layers are restored.".format(len(pretrained_dict), len(model_dict)))
-        missed_keys = set(model_dict.keys())-set(pretrained_dict.keys())
-        print(" | > Missed Keys:", missed_keys)
-
-    # set trainer
-    trainer = Trainer(
-        TrainerArgs(continue_path=args.continue_path, restore_path=args.restore_path, use_ddp=args.use_ddp, rank=args.rank, group_id=args.group_id), 
-        config, 
-        args.output_path, 
-        model=model, 
-        train_samples=train_samples, 
-        eval_samples=eval_samples
-    )
-
-    # run training
-    trainer.fit()
-
-
-if __name__ == '__main__':
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-
-    parser = get_arg_parser()
-    args = parser.parse_args()
-
-    args.dataset_path = args.dataset_path.format(args.dataset_name ,args.language)
-
-    if args.use_style_encoder:
-        assert args.use_speaker_embedding
-
-    if not os.path.exists(args.output_path):
-        os.makedirs(args.output_path)
-
-    main(args)
+                model_outputs = model.inference
